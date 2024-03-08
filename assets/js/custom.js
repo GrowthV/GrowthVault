@@ -17,55 +17,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const colorSwitcher = document.getElementById('btnSwitch');
 
-
 switchThemeByUrl();
-updateThemeColor(localStorage.getItem('theme'))
-
+updateThemeColor(localStorage.getItem('theme') || 'dark'); // Default to dark theme
 
 colorSwitcher.addEventListener('click', () => {
-
     const theme = localStorage.getItem('theme');
-
-    if (theme && theme === 'dark') {
-
-        updateThemeColor('light');
-
-    } else {
-        updateThemeColor('dark');
-
-    }
-
+    updateThemeColor(theme === 'dark' ? 'light' : 'dark');
 });
 
-function updateThemeColor(themeMode = 'light') {
-
+function updateThemeColor(themeMode) {
     document.documentElement.setAttribute('data-bs-theme', themeMode);
-    localStorage.setItem('theme', themeMode)
-
-    if (themeMode === 'dark') {
-        colorSwitcher.classList.add('dark-switcher');
-
-    } else {
-        colorSwitcher.classList.remove('dark-switcher');
-    }
-
+    localStorage.setItem('theme', themeMode);
+    colorSwitcher.classList.toggle('dark-switcher', themeMode === 'dark');
     changeImage(themeMode);
-
 }
-
-
 
 function switchThemeByUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     const theme = urlParams.get('theme');
-
-    if (theme) {
-        localStorage.setItem("theme", theme);
+    if (!theme) {
+        localStorage.setItem('theme', 'dark'); // Set default theme to dark if not specified
     }
-
 }
 
 // =================== light and dark end ================== //
+
 
 
 
